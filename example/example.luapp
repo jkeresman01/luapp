@@ -1,0 +1,87 @@
+-- Person class example
+
+class Person
+
+    local _first_name ( get, set ) -- C# style properties
+    local _last_name  ( get, set )
+    local _age        ( get, local set )
+
+    Person(first, last, age)
+        self._first_name = first
+        self._last_name = last
+        self._age = age
+    end
+
+    local function is_minor()
+        return self._age <= 18
+    end
+
+    function get_age_description()
+        if is_minor() then
+            return "I minor"
+        else
+            return "I'm not minor"
+        end
+    end
+
+end
+
+
+-- Collections Framework Examples --------------------------------------------
+
+-- List example (immutable / read-only)
+local numbers = List(1, 2, 3, 4, 5)
+
+print("List size:", numbers.size())
+print("First number:", numbers.get(0))
+print("Map:", numbers.map(x -> x * 2))   -- planned Kotlin-style lambda
+
+
+-- MutableList example
+local items = MutableList("apple", "banana")
+
+items.add("orange")
+items.removeAt(0)
+
+print("MutableList elements:", items)
+
+
+-- Set example
+local nums = Set(1, 2, 3, 3, 2)
+
+print("Does set contain 2?", nums.contains(2))
+print("Set contents:", nums)
+
+
+-- MutableSet example
+local mset = MutableSet(1, 2, 3)
+
+mset.add(4)
+mset.remove(2)
+
+print("MutableSet:", mset)
+
+
+-- Map example
+local grades = Map(
+    "Alice", 95,
+    "Bob", 88,
+    "Charlie", 72
+)
+
+print("Alice grade:", grades.get("Alice"))
+print("Keys:", grades.keys())
+print("Values:", grades.values())
+
+
+-- MutableMap example
+local ages = MutableMap(
+    "Alice", 22,
+    "Bob", 31
+)
+
+ages.put("Charlie", 18)
+ages.remove("Bob")
+
+print("Charlie:", ages.get("Charlie"))
+

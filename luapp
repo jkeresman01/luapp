@@ -1,0 +1,22 @@
+#!/usr/bin/env lua
+
+local compiler = require("src.compiler.compiler")
+
+local args = {...}
+
+if #args == 0 then
+    io.stderr:write("Usage: luapp <source.luapp>\n")
+    os.exit(1)
+end
+
+local path = args[1]
+
+local ok, err = pcall(function()
+    compiler.run{ path }
+end)
+
+if not ok then
+    io.stderr:write("Luapp error: " .. tostring(err) .. "\n")
+    os.exit(1)
+end
+

@@ -1,0 +1,26 @@
+class Person
+    local _first_name ( get, set )
+    local _last_name  ( get, set )
+    local _age        ( get, local set )
+
+    Person(first, last, age)
+        self._first_name = first
+        self._last_name = last
+        self._age = age
+    end
+
+    local function is_minor()
+        return self._age <= 18
+    end
+
+    function get_age_description()
+        if is_minor() then
+            return "I minor"
+        else
+            return "I'm not minor"
+        end
+    end
+
+end
+
+
