@@ -1,11 +1,13 @@
-# Luapp
+<div align="center">
 
-**Luapp** is a small programming language that adds a familiar object-oriented syntax and ports Kotlin collections 
-framework to Lua.
+  <h1>Lua++</h1>
+  <h4>We bring classes and port kotlins collection framework to lua, also 0 based indexing</h4>
+  <h6><i>Still simple, but better and easier to write</i></h6>
 
+[![Lua](https://img.shields.io/badge/Lua-blue.svg?style=for-the-badge&logo=lua)](http://www.lua.org)
+![Work In Progress](https://img.shields.io/badge/Work%20In%20Progress-orange?style=for-the-badge)
 
-It transpiles lua++ file into valid lua code.
-
+</div>
 
 Code writen in lua++
 ```lua
@@ -31,6 +33,7 @@ class Person
     end
 
 end
+```
 
 Same code written in pure lua (we transpile to this)
 
