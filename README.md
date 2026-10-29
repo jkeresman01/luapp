@@ -77,6 +77,7 @@ function Person:description()
 end
 
 return Person
+```
 
 ## Usage: ##
 
