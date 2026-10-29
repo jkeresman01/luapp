@@ -1,15 +1,22 @@
 <div align="center">
 
-  <h1>Lua++</h1>
-  <h4>We bring classes and port kotlins collection framework to lua, also 0 based indexing</h4>
-  <h6><i>Still simple, but better and easier to write</i></h6>
+  <h1>Luapp</h1>
+  <h4>**Luapp** is a small programming language that adds a familiar object-oriented syntax</h4>
 
 [![Lua](https://img.shields.io/badge/Lua-blue.svg?style=for-the-badge&logo=lua)](http://www.lua.org)
-![Work In Progress](https://img.shields.io/badge/Work%20In%20Progress-orange?style=for-the-badge)
+[![Lua](https://img.shields.io/badge/Lua-blue.svg?style=for-the-badge&logo=lua)](http://www.lua.org)
+[![Lua](https://img.shields.io/badge/Lua-blue.svg?style=for-the-badge&logo=lua)](http://www.lua.org)
 
 </div>
 
-Code writen in lua++
+> [!NOTE]
+> Lua++ is a small transpiler that turns a concise class syntax into plain Lua. The output has no runtime dependency, so it runs anywhere Lua runs.
+
+## Example: ##
+
+> [!NOTE]
+> Code written in Luapp
+
 ```lua
 class Person
     local _name ( get, set )
@@ -35,7 +42,8 @@ class Person
 end
 ```
 
-Same code written in pure lua (we transpile to this)
+> [!NOTE]
+> Same code written in pure lua (we transpile to this)
 
 ```lua
 local Person = {}
@@ -69,4 +77,11 @@ function Person:description()
 end
 
 return Person
+
+## Usage: ##
+
+The compiler reads a .luapp file and prints the generated Lua to stdout:
+
+```shell
+luapp Person.luapp > Person.lua
 ```

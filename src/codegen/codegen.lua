@@ -1,5 +1,16 @@
 local codegen = {}
 
+----------------------------------------------------------------------------
+--
+-- Rewrite bare calls to class methods into 'self:' calls, e.g.
+-- "foo(" becomes "self:foo(".
+--
+-- @param  body         string  Method body source text
+-- @param  methodNames  table   List of method names to rewrite
+--
+-- @return string               Rewritten body
+--
+----------------------------------------------------------------------------
 local function rewriteMethodCalls(body, methodNames)
     for _, name in ipairs(methodNames) do
         body = body:gsub("(%f[%w_])" .. name .. "%s*%(", "self:" .. name .. "(")
@@ -7,6 +18,17 @@ local function rewriteMethodCalls(body, methodNames)
     return body
 end
 
+----------------------------------------------------------------------------
+--
+-- Generate the Lua source of a public getter, "Class:get_<name>()".
+-- A leading underscore on the field name is dropped from the method name.
+--
+-- @param  className  string  Name of the class
+-- @param  field      table   Field node
+--
+-- @return string             Lua source for the getter
+--
+----------------------------------------------------------------------------
 local function generatePublicGetter(className, field)
     local clean = field.name:gsub("^_", "")
     return string.format([[
@@ -17,6 +39,17 @@ end
 ]], className, clean, field.name)
 end
 
+----------------------------------------------------------------------------
+--
+-- Generate the Lua source of a public setter, "Class:set_<name>(value)".
+-- A leading underscore on the field name is dropped from the method name.
+--
+-- @param  className  string  Name of the class
+-- @param  field      table   Field node
+--
+-- @return string             Lua source for the setter
+--
+----------------------------------------------------------------------------
 local function generatePublicSetter(className, field)
     local clean = field.name:gsub("^_", "")
     return string.format([[
@@ -27,6 +60,17 @@ end
 ]], className, clean, field.name)
 end
 
+----------------------------------------------------------------------------
+--
+-- Generate the Lua source of a private setter, a file-local function
+-- "Class_set_<name>(self, value)" that is not exposed on the class table.
+--
+-- @param  className  string  Name of the class
+-- @param  field      table   Field node
+--
+-- @return string             Lua source for the setter
+--
+----------------------------------------------------------------------------
 local function generatePrivateSetter(className, field)
     local clean = field.name:gsub("^_", "")
     return string.format([[
@@ -37,6 +81,18 @@ end
 ]], className, clean, field.name)
 end
 
+----------------------------------------------------------------------------
+--
+-- Generate Lua source code from a Class AST node. Emits, in order: the
+-- class table, the constructor, field accessors, and methods.
+--
+-- @param  ast  table          Class node produced by the parser
+--
+-- @return string              Generated Lua source
+--
+-- @error                      Raised for private getters (unsupported in v0.1)
+--
+----------------------------------------------------------------------------
 function codegen.generate(ast)
     local out = {}
     local function emit(s) table.insert(out, s) end
@@ -48,7 +104,7 @@ function codegen.generate(ast)
 
     if ast.constructor then
         local c = ast.constructor
-        emit(string.format("function %s:new(%s)", 
+        emit(string.format("function %s:new(%s)",
             className, table.concat(c.params, ", ")))
         emit("    local self = setmetatable({}, " .. className .. ")")
 
@@ -105,4 +161,3 @@ function codegen.generate(ast)
 end
 
 return codegen
-

@@ -1,9 +1,23 @@
 #!/usr/bin/env lua
 
+----------------------------------------------------------------------------
+--
+-- Luapp command-line entry point. Compiles a Luapp source file to Lua and
+-- prints the result to stdout. Any error is reported on stderr and the
+-- process exits with status 1.
+--
+-- Usage: luapp <source.luapp>
+--
+-- @param  ...  string  Command-line arguments; the first is the .luapp path
+--
+-- @return nil          Exits with status 1 on failure
+--
+----------------------------------------------------------------------------
 local compiler = require("src.compiler.compiler")
 
 local args = {...}
 
+-- Require a source file argument.
 if #args == 0 then
     io.stderr:write("Usage: luapp <source.luapp>\n")
     os.exit(1)
@@ -11,6 +25,8 @@ end
 
 local path = args[1]
 
+-- Run the compiler, catching any error raised by the scanner, parser
+-- or code generator.
 local ok, err = pcall(function()
     compiler.run{ path }
 end)
@@ -19,4 +35,3 @@ if not ok then
     io.stderr:write("Luapp error: " .. tostring(err) .. "\n")
     os.exit(1)
 end
-

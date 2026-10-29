@@ -4,6 +4,17 @@ local Codegen = require("src.codegen.codegen")
 
 local compiler = {}
 
+----------------------------------------------------------------------------
+--
+-- Read the entire contents of a file.
+--
+-- @param  path  string        Path of the file to read
+--
+-- @return string              File contents
+--
+-- @error                      Raised if the file cannot be opened
+--
+----------------------------------------------------------------------------
 local function readFile(path)
     local file = assert(io.open(path, "r"), "Could not open " .. path)
     local content = file:read("*a")
@@ -11,6 +22,16 @@ local function readFile(path)
     return content
 end
 
+----------------------------------------------------------------------------
+--
+-- Compile Luapp source code into Lua source code by running the scanner,
+-- parser and code generator in sequence.
+--
+-- @param  source  string      Luapp source code
+--
+-- @return string              Generated Lua source code
+--
+----------------------------------------------------------------------------
 function compiler.compile(source)
     local scanner = Lexer:new(source)
     local tokens = scanner:scanTokens()
@@ -22,6 +43,15 @@ function compiler.compile(source)
     return lua
 end
 
+----------------------------------------------------------------------------
+--
+-- Command-line entry point. Compiles the file given as the first argument
+-- and prints the generated Lua to stdout. On failure, writes the error to
+-- stderr and exits with status 1.
+--
+-- @param  args  table         Command-line arguments; args[1] is the .luapp path
+--
+----------------------------------------------------------------------------
 function compiler.run(args)
     if not args[1] then
         print("Usage: luapp <file.luapp>")
@@ -44,4 +74,3 @@ function compiler.run(args)
 end
 
 return compiler
-
